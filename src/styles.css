@@ -106,6 +106,9 @@ output {
     margin: 4px 0;
     border-left: solid 8px var(--clr-bg);
 }
+output[data-state="info"] {
+    border-left-color: #0c77f9;
+}
 output[data-state="warning"] {
     border-left-color: #f9dd0c;
 }
@@ -164,6 +167,13 @@ button:disabled {
 }
 button:disabled:hover {
     background-color: var(--clr-primary);
+}
+button.subtle {
+    background-color: var(--clr-panel-bg);
+    color: var(--clr-on-bg);
+}
+button.subtle:hover {
+    background-color: var(--clr-bg);
 }
 .input_button {
     display: flex;

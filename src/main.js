@@ -16,6 +16,8 @@ let keypair
 let domain
 /** @type {string} */
 let aspeUri
+/** @type {string} */
+let fingerprint
 /** @type {asp.AspProfile} */
 let profile
 /** @type {string} */
@@ -23,12 +25,23 @@ let requestAction = 'create'
 /** @type {number} */
 let timeoutId = NaN
 
+/**
+ * @readonly
+ * @enum {string}
+ */
+const ExportMethod = {
+  Upload: 'upload',
+  Plaintext: 'plaintext',
+}
+
 const main = async () => {
   ui.fillInTemplates('build_version', buildVersion)
   ui.fillInTemplates('default_domain', defaultDomain)
   ui.initTranslations()
   ui.applyTranslations()
 }
+
+//----- HELPER FUNCTIONS -----//
 
 /**
  * @function
@@ -56,25 +69,71 @@ const updateProofs = async (aspeUri) => {
  * @function
  * @param {string} message
  * @param {string} [state]
+ * @param {number} [timeout]
  */
-const giveFeedback = (message, state) => {
+const giveFeedback = (message, state, timeout) => {
   if (!Number.isNaN(timeoutId)) {
     clearTimeout(timeoutId)
   }
   ui.formFeedback(message, state)
-  timeoutId = removeFeedback()
+  timeoutId = removeFeedback(timeout)
 }
 
 /**
  * @function
+ * @param {number} [timeout]
  * @returns {number}
  */
-const removeFeedback = () => {
+const removeFeedback = (timeout) => {
   // @ts-ignore
   return setTimeout(() => {
     ui.formFeedback('', 'idle')
-  }, 5000)
+  }, timeout || 5000)
 }
+
+/**
+ * @function
+ * @param {ExportMethod} method
+ */
+const uploadOrExportProfile = async method => {
+  profile = ui.getProfileFromForm()
+
+  if (profile.name.length === 0) {
+    giveFeedback('Please enter a name', 'warning')
+    return
+  }
+
+  switch (method) {
+    case ExportMethod.Plaintext:
+      const jws = await asp.generateProfileJws(profile, keypair)
+      giveFeedback(`The profile JWS:
+        <br>
+        <span class="important_data">${jws}</span>
+        <br>
+        Upload the profile JWS to:
+        <br>
+        <span class="important_data">https://${domain}/.well-known/aspe/id/${fingerprint}</span>`,
+        'info', 30000)
+      break;
+  
+    case ExportMethod.Plaintext:
+      const res = await asp.uploadProfile(profile, keypair, requestAction, domain)
+
+      if (res) {
+        requestAction = 'update'
+        giveFeedback('Upload successful!', 'success')
+      } else {
+        giveFeedback('Upload failed', 'failure')
+      }
+      break;
+  
+    default:
+      giveFeedback('Error: not able to export', 'failure')
+      break;
+  }
+}
+
+//----- EVENT LISTENERS -----//
 
 document.querySelector('#form_load_profile').addEventListener('submit', async evt => {
   evt.preventDefault()
@@ -96,7 +155,7 @@ document.querySelector('#form_load_profile').addEventListener('submit', async ev
   }
 
   const jwkKey = await crypt.keyToJwk(keypair.privateKey)
-  const fingerprint = await crypt.computeJwkFingerprint(jwkKey)
+  fingerprint = await crypt.computeJwkFingerprint(jwkKey)
   aspeUri = asp.generateAspeUri(domain, fingerprint)
 
   const profileJwsStr = await asp.getProfile(fingerprint, domain)
@@ -119,7 +178,7 @@ document.querySelector('#btn_create_profile').addEventListener('click', async ev
 
   keypair = await crypt.generateKey()
   const jwkKey = await crypt.keyToJwk(keypair.privateKey)
-  const fingerprint = await crypt.computeJwkFingerprint(jwkKey)
+  fingerprint = await crypt.computeJwkFingerprint(jwkKey)
   aspeUri = asp.generateAspeUri(domain, fingerprint)
 
   profile = new asp.AspProfile()
@@ -171,19 +230,39 @@ document.querySelector('#btn_add_claim').addEventListener('click', async evt => 
 document.querySelector('#form_edit_profile').addEventListener('submit', async evt => {
   evt.preventDefault()
 
-  profile = ui.getProfileFromForm()
-  if (profile.name.length === 0) {
-    giveFeedback('Please enter a name', 'warning')
-    return
-  }
+  uploadOrExportProfile(ExportMethod.Upload)
 
-  const res = await asp.uploadProfile(profile, keypair, requestAction, domain)
-  if (res) {
-    requestAction = 'update'
-    giveFeedback('Upload successful!', 'success')
-  } else {
-    giveFeedback('Upload failed', 'failure')
-  }
+  // profile = ui.getProfileFromForm()
+  // if (profile.name.length === 0) {
+  //   giveFeedback('Please enter a name', 'warning')
+  //   return
+  // }
+
+  // const res = await asp.uploadProfile(profile, keypair, requestAction, domain)
+  // if (res) {
+  //   requestAction = 'update'
+  //   giveFeedback('Upload successful!', 'success')
+  // } else {
+  //   giveFeedback('Upload failed', 'failure')
+  // }
+})
+
+document.querySelector('#btn_export_profile').addEventListener('click', async evt => {
+  uploadOrExportProfile(ExportMethod.Plaintext)
+
+  // profile = ui.getProfileFromForm()
+  // if (profile.name.length === 0) {
+  //   giveFeedback('Please enter a name', 'warning')
+  //   return
+  // }
+
+  // const res = await asp.uploadProfile(profile, keypair, requestAction, domain)
+  // if (res) {
+  //   requestAction = 'update'
+  //   giveFeedback('Upload successful!', 'success')
+  // } else {
+  //   giveFeedback('Upload failed', 'failure')
+  // }
 })
 
 document.querySelector('#container_identity_claim_inputs').addEventListener('click', evt => {
@@ -211,7 +290,7 @@ document.querySelectorAll('.close_dialog').forEach(el => {
   })
 })
 
-// ----- CLAIM DIALOGS-----//
+//----- CLAIM DIALOGS -----//
 
 document.querySelector('#add_claim_mastodon form').addEventListener('submit', evt => {
   const el = document.querySelector('#add_claim_mastodon form')
