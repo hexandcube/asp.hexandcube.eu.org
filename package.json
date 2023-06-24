@@ -10,6 +10,7 @@
   "scripts": {
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
+    "test": "yarn lint",
     "dev": "rollup -c -w",
     "build": "rm -rf ./dist && rollup -c",
     "fetch-translations": "rm -rf ./static/locales && git clone https://translate.codeberg.org/git/keyoxide/keyoxide-asp-web-tool/ ./static/locales && rm -rf ./static/locales/.git"
