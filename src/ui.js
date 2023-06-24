@@ -87,11 +87,11 @@ export function fillInTemplates (id, value) {
           // @ts-ignore
           el.value = value
         }
-        break;
-    
+        break
+
       default:
         el.innerHTML = value
-        break;
+        break
     }
   })
 }

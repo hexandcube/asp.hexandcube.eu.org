@@ -4,14 +4,10 @@ import * as crypt from './crypto.js'
 import * as asp from './asp.js'
 import * as ui from './ui.js'
 
-
 /** @type {string} */
-// @ts-ignore
-const buildDate = __buildDate__
+const buildVersion = '__buildVersion__'
 /** @type {string} */
-const buildVersion = "__buildVersion__"
-/** @type {string} */
-const defaultDomain = "__configDefaultDomain__"
+const defaultDomain = '__configDefaultDomain__'
 
 // @ts-ignore
 /** @type {jose.GenerateKeyPairResult<jose.KeyLike>} */
@@ -41,8 +37,8 @@ const main = async () => {
 const updateProofs = async (aspeUri) => {
   ui.fillInTemplates('direct_proof', aspeUri)
 
-  const salt = new Uint8Array(16);
-  window.crypto.getRandomValues(salt);
+  const salt = new Uint8Array(16)
+  window.crypto.getRandomValues(salt)
   const key = await argon2id({
     password: aspeUri.toUpperCase(),
     salt,
@@ -50,8 +46,8 @@ const updateProofs = async (aspeUri) => {
     iterations: 256,
     memorySize: 512,
     hashLength: 32,
-    outputType: 'encoded',
-  });
+    outputType: 'encoded'
+  })
 
   ui.fillInTemplates('hashed_proof', key)
 }
@@ -109,7 +105,7 @@ document.querySelector('#form_load_profile').addEventListener('submit', async ev
   ui.fillInTemplates('fingerprint', fingerprint)
   ui.fillInTemplates('aspe_uri', aspeUri)
   ui.putProfileToForm(profile)
-  updateProofs(aspeUri);
+  updateProofs(aspeUri)
   requestAction = 'update'
 
   ui.showPanel('edit_profile')
@@ -130,7 +126,7 @@ document.querySelector('#btn_create_profile').addEventListener('click', async ev
 
   ui.fillInTemplates('fingerprint', fingerprint)
   ui.fillInTemplates('aspe_uri', aspeUri)
-  updateProofs(aspeUri);
+  updateProofs(aspeUri)
   ui.putProfileToForm(profile)
   ui.showPanel('edit_profile')
 })
@@ -149,28 +145,27 @@ document.querySelector('#btn_reveal_secret_key').addEventListener('click', async
 })
 
 document.querySelector('#btn_generate_proofs').addEventListener('click', async evt => {
-  updateProofs(aspeUri);
+  updateProofs(aspeUri)
 })
 
 document.querySelector('#btn_add_claim').addEventListener('click', async evt => {
   evt.preventDefault()
 
   // @ts-ignore
-  const claim_target = document.querySelector('#input_service_provider').value;
+  const claimTarget = document.querySelector('#input_service_provider').value
 
-  switch (claim_target) {
+  switch (claimTarget) {
     case 'manual':
       profile = ui.getProfileFromForm()
       profile.claims.push('')
       ui.putProfileToForm(profile)
-      break;
+      break
 
     default:
       // @ts-ignore
-      document.querySelector(`#add_claim_${claim_target}`).showModal()
-      break;
+      document.querySelector(`#add_claim_${claimTarget}`).showModal()
+      break
   }
-
 })
 
 document.querySelector('#form_edit_profile').addEventListener('submit', async evt => {
@@ -216,7 +211,7 @@ document.querySelectorAll('.close_dialog').forEach(el => {
   })
 })
 
-//----- CLAIM DIALOGS-----//
+// ----- CLAIM DIALOGS-----//
 
 document.querySelector('#add_claim_mastodon form').addEventListener('submit', evt => {
   const el = document.querySelector('#add_claim_mastodon form')
@@ -278,16 +273,16 @@ document.querySelector('#add_claim_forgejo form').addEventListener('submit', evt
 
   /** @type {string} */
   // @ts-ignore
-  const input_domain = el.querySelector('input.domain').value
+  const inputDomain = el.querySelector('input.domain').value
   /** @type {string} */
   // @ts-ignore
-  const input_username = el.querySelector('input.username').value
+  const inputUsername = el.querySelector('input.username').value
   /** @type {string} */
   // @ts-ignore
-  const input_repo = el.querySelector('input.repo').value
+  const inputRepo = el.querySelector('input.repo').value
 
   profile = ui.getProfileFromForm()
-  profile.claims.push(`https://${input_domain}/${input_username}/${input_repo}`)
+  profile.claims.push(`https://${inputDomain}/${inputUsername}/${inputRepo}`)
   ui.putProfileToForm(profile)
 
   // @ts-ignore
