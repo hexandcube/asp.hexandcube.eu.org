@@ -19,3 +19,4 @@ yarn build
 
 - [ ] Translate remaining strings
 - [ ] Add dialogs for more claims
+- [ ] Add tests
