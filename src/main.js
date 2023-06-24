@@ -31,7 +31,7 @@ let timeoutId = NaN
  */
 const ExportMethod = {
   Upload: 'upload',
-  Plaintext: 'plaintext',
+  Plaintext: 'plaintext'
 }
 
 const main = async () => {
@@ -41,7 +41,7 @@ const main = async () => {
   ui.applyTranslations()
 }
 
-//----- HELPER FUNCTIONS -----//
+// ----- HELPER FUNCTIONS -----//
 
 /**
  * @function
@@ -103,9 +103,11 @@ const uploadOrExportProfile = async method => {
     return
   }
 
+  let jws, res
+
   switch (method) {
     case ExportMethod.Plaintext:
-      const jws = await asp.generateProfileJws(profile, keypair)
+      jws = await asp.generateProfileJws(profile, keypair)
       giveFeedback(`The profile JWS:
         <br>
         <span class="important_data">${jws}</span>
@@ -113,11 +115,11 @@ const uploadOrExportProfile = async method => {
         Upload the profile JWS to:
         <br>
         <span class="important_data">https://${domain}/.well-known/aspe/id/${fingerprint}</span>`,
-        'info', 30000)
-      break;
-  
-    case ExportMethod.Plaintext:
-      const res = await asp.uploadProfile(profile, keypair, requestAction, domain)
+      'info', 30000)
+      break
+
+    case ExportMethod.Upload:
+      res = await asp.uploadProfile(profile, keypair, requestAction, domain)
 
       if (res) {
         requestAction = 'update'
@@ -125,15 +127,15 @@ const uploadOrExportProfile = async method => {
       } else {
         giveFeedback('Upload failed', 'failure')
       }
-      break;
-  
+      break
+
     default:
       giveFeedback('Error: not able to export', 'failure')
-      break;
+      break
   }
 }
 
-//----- EVENT LISTENERS -----//
+// ----- EVENT LISTENERS -----//
 
 document.querySelector('#form_load_profile').addEventListener('submit', async evt => {
   evt.preventDefault()
@@ -290,7 +292,7 @@ document.querySelectorAll('.close_dialog').forEach(el => {
   })
 })
 
-//----- CLAIM DIALOGS -----//
+// ----- CLAIM DIALOGS -----//
 
 document.querySelector('#add_claim_mastodon form').addEventListener('submit', evt => {
   const el = document.querySelector('#add_claim_mastodon form')
