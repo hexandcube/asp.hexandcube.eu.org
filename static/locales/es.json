@@ -23,5 +23,10 @@
     "edit_profile_btn_upload": "Guardar y cargar el perfil",
     "tool_name": "Herramienta ASP de Keyoxide",
     "edit_profile_btn_load_profile": "Cargar el perfil",
-    "header_warning_security_considerations": "Le las <a href=\"#security-considerations\">consideraciones de seguridad</a> antes de utilizar esta herramienta"
+    "header_warning_security_considerations": "Le las <a href=\"#security-considerations\">consideraciones de seguridad</a> antes de utilizar esta herramienta",
+    "edit_profile_identity_proofs_title": "Documentos de identidad",
+    "edit_profile_direct_proof": "Una prueba directa",
+    "edit_profile_hashed_proof": "Prueba de hash",
+    "edit_profile_btn_generate_proofs": "Generar nuevas pruebas",
+    "edit_profile_proof_help": "Utiliza una \"prueba directa\" si quieres que la gente encuentre tu perfil. Utiliza una \"prueba hash\" para ocultar tu perfil. ¡Nunca utilices la misma \"prueba hash\" dos veces!"
 }

@@ -28,5 +28,6 @@
     "edit_profile_direct_proof": "Direct proof",
     "edit_profile_hashed_proof": "Hashed proof",
     "edit_profile_proof_help": "Use a \"direct proof\" if you want people to find your profile. Use a \"hashed proof\" to hide your profile. Never use the same \"hashed proof\" twice!",
-    "edit_profile_btn_generate_proofs": "Generate new proofs"
+    "edit_profile_btn_generate_proofs": "Generate new proofs",
+    "edit_profile_btn_export_profile": "Export profile"
 }
