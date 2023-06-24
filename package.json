@@ -1,0 +1,41 @@
+{
+  "name": "kx-aspe-web",
+  "version": "0.1.0",
+  "description": "Keyoxide ASPE web tool",
+  "type": "module",
+  "main": "src/index.js",
+  "repository": "https://codeberg.org/keyoxide/kx-aspe-web",
+  "author": "Yarmo Mackenbach <dev@yarmo.eu>",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint ./src",
+    "lint:fix": "eslint ./src --fix",
+    "dev": "rollup -c -w",
+    "build": "rm -rf ./dist && rollup -c",
+    "fetch-translations": "rm -rf ./static/locales && git clone https://translate.codeberg.org/git/keyoxide/keyoxide-asp-web-tool/ ./static/locales && rm -rf ./static/locales/.git"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-replace": "^5.0.2",
+    "eslint": "^8.39.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.7.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "node-html-parser": "^6.1.5",
+    "rollup": "^3.21.0",
+    "rollup-plugin-html-insert": "^1.0.7",
+    "rollup-plugin-import-css": "^3.2.1",
+    "rollup-plugin-polyfill-node": "^0.12.0",
+    "rollup-plugin-static-files": "^0.2.0"
+  },
+  "dependencies": {
+    "hash-wasm": "^4.9.0",
+    "i18next": "^23.2.2",
+    "i18next-browser-languagedetector": "^7.0.2",
+    "i18next-http-backend": "^2.2.1",
+    "jose": "^4.14.4",
+    "rfc4648": "^1.5.2"
+  }
+}
