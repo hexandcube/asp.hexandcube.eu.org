@@ -113,8 +113,8 @@ export function putProfileToForm (profile) {
     profile.claims.forEach((claim, i) => {
       document.querySelector('#container_identity_claim_inputs').innerHTML += `<p>
     <div class="input_button">
-        <input type="text" placeholder="Identity claim" data-index="${i}" value="${claim}">
-        <button type="button" data-index="${i}" class="btn_remove_claim">Remove</button>
+        <input type="text" data-i18n-placeholder="general_txt_identity_claim" placeholder="${i18next.t('general_txt_identity_claim')}" data-index="${i}" value="${claim}">
+        <button type="button" data-index="${i}" class="btn_remove_claim" data-i18n="general_txt_remove">${i18next.t('general_txt_remove')}</button>
     </div>
 <p>
 `

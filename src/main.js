@@ -3,6 +3,7 @@ import { argon2id } from 'hash-wasm'
 import * as crypt from './crypto.js'
 import * as asp from './asp.js'
 import * as ui from './ui.js'
+import i18next from 'i18next'
 
 /** @type {string} */
 const buildVersion = '__buildVersion__'
@@ -99,7 +100,7 @@ const uploadOrExportProfile = async method => {
   profile = ui.getProfileFromForm()
 
   if (profile.name.length === 0) {
-    giveFeedback('Please enter a name', 'warning')
+    giveFeedback(i18next.t('edit_profile_feedback_missing_name'), 'warning')
     return
   }
 
@@ -109,11 +110,11 @@ const uploadOrExportProfile = async method => {
     case ExportMethod.Plaintext:
       jws = await asp.generateProfileJws(profile, keypair)
 
-      document.querySelector('#export_profile p').innerHTML = `The profile JWS:
+      document.querySelector('#export_profile p').innerHTML = `${i18next.t('edit_profile_export_dialog_profile')}
         <br>
         <span class="important_data">${jws}</span>
         <br>
-        Upload the profile JWS to:
+        ${i18next.t('edit_profile_export_dialog_upload')}
         <br>
         <span class="important_data">https://${domain}/.well-known/aspe/id/${fingerprint}</span>`
 
@@ -126,9 +127,9 @@ const uploadOrExportProfile = async method => {
 
       if (res) {
         requestAction = 'update'
-        giveFeedback('Upload successful!', 'success')
+        giveFeedback(i18next.t('edit_profile_feedback_upload_successful'), 'success')
       } else {
-        giveFeedback('Upload failed', 'failure')
+        giveFeedback(i18next.t('edit_profile_feedback_upload_failed'), 'failure')
       }
       break
 
@@ -250,9 +251,9 @@ document.querySelector('#btn_delete_profile').addEventListener('click', async ev
 document.querySelector('#delete_profile form').addEventListener('submit', async evt => {
   const res = await asp.uploadProfile(profile, keypair, 'delete', domain)
   if (res) {
-    giveFeedback('Profile deletion successful!', 'success')
+    giveFeedback(i18next.t('edit_profile_feedback_deletion_successful'), 'success')
   } else {
-    giveFeedback('Profile deletion failed, perhaps you haven\'t uploaded it yet or you have deleted it already', 'failure')
+    giveFeedback(i18next.t('edit_profile_feedback_deletion_failed'), 'failure')
   }
 
   // @ts-ignore
