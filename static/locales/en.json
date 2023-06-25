@@ -30,5 +30,14 @@
     "edit_profile_proof_help": "Use a \"direct proof\" if you want people to find your profile. Use a \"hashed proof\" to hide your profile. Never use the same \"hashed proof\" twice!",
     "edit_profile_btn_generate_proofs": "Generate new proofs",
     "edit_profile_btn_export_profile": "Export profile",
-    "edit_profile_btn_delete_profile": "Delete profile"
+    "edit_profile_btn_delete_profile": "Delete profile",
+    "general_txt_remove": "Remove",
+    "general_txt_identity_claim": "Identity claim",
+    "edit_profile_feedback_missing_name": "Please enter a name",
+    "edit_profile_export_dialog_profile": "The profile JWS:",
+    "edit_profile_export_dialog_upload": "Upload the profile JWS to:",
+    "edit_profile_feedback_upload_successful": "Upload successful!",
+    "edit_profile_feedback_upload_failed": "Upload failed",
+    "edit_profile_feedback_deletion_failed": "Profile deletion failed, perhaps you haven't uploaded it yet or you have deleted it already",
+    "edit_profile_feedback_deletion_successful": "Profile deletion successful!"
 }
