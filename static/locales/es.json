@@ -28,5 +28,6 @@
     "edit_profile_direct_proof": "Una prueba directa",
     "edit_profile_hashed_proof": "Prueba de hash",
     "edit_profile_btn_generate_proofs": "Generar nuevas pruebas",
-    "edit_profile_proof_help": "Utiliza una \"prueba directa\" si quieres que la gente encuentre tu perfil. Utiliza una \"prueba hash\" para ocultar tu perfil. ¡Nunca utilices la misma \"prueba hash\" dos veces!"
+    "edit_profile_proof_help": "Utiliza una \"prueba directa\" si quieres que la gente encuentre tu perfil. Utiliza una \"prueba hash\" para ocultar tu perfil. ¡Nunca utilices la misma \"prueba hash\" dos veces!",
+    "edit_profile_btn_export_profile": "Exportar el perfil"
 }
