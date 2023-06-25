@@ -74,7 +74,7 @@ export async function generateProfileJws (profile, keypair) {
 export async function generateRequestJws (profile, keypair, action) {
   const jwk = await keyToJwk(keypair.publicKey)
 
-  let profileData = {
+  const profileData = {
     'http://ariadne.id/version': 0,
     'http://ariadne.id/type': 'request',
     'http://ariadne.id/action': action

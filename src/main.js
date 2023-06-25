@@ -108,7 +108,7 @@ const uploadOrExportProfile = async method => {
   switch (method) {
     case ExportMethod.Plaintext:
       jws = await asp.generateProfileJws(profile, keypair)
-      
+
       document.querySelector('#export_profile p').innerHTML = `The profile JWS:
         <br>
         <span class="important_data">${jws}</span>
@@ -248,8 +248,6 @@ document.querySelector('#btn_delete_profile').addEventListener('click', async ev
 })
 
 document.querySelector('#delete_profile form').addEventListener('submit', async evt => {
-  const el = document.querySelector('#add_claim_mastodon form')
-
   const res = await asp.uploadProfile(profile, keypair, 'delete', domain)
   if (res) {
     giveFeedback('Profile deletion successful!', 'success')
