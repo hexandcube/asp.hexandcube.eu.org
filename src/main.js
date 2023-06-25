@@ -108,14 +108,17 @@ const uploadOrExportProfile = async method => {
   switch (method) {
     case ExportMethod.Plaintext:
       jws = await asp.generateProfileJws(profile, keypair)
-      giveFeedback(`The profile JWS:
+      
+      document.querySelector('#export_profile p').innerHTML = `The profile JWS:
         <br>
         <span class="important_data">${jws}</span>
         <br>
         Upload the profile JWS to:
         <br>
-        <span class="important_data">https://${domain}/.well-known/aspe/id/${fingerprint}</span>`,
-      'info', 30000)
+        <span class="important_data">https://${domain}/.well-known/aspe/id/${fingerprint}</span>`
+
+      // @ts-ignore
+      document.querySelector('#export_profile').showModal()
       break
 
     case ExportMethod.Upload:
