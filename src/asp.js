@@ -74,12 +74,17 @@ export async function generateProfileJws (profile, keypair) {
 export async function generateRequestJws (profile, keypair, action) {
   const jwk = await keyToJwk(keypair.publicKey)
 
-  const jwt = await new jose.SignJWT({
+  let profileData = {
     'http://ariadne.id/version': 0,
     'http://ariadne.id/type': 'request',
-    'http://ariadne.id/action': action,
-    'http://ariadne.id/profile_jws': await generateProfileJws(profile, keypair)
-  })
+    'http://ariadne.id/action': action
+  }
+
+  if (action === 'create' || action === 'update') {
+    profileData['http://ariadne.id/profile_jws'] = await generateProfileJws(profile, keypair)
+  }
+
+  const jwt = await new jose.SignJWT(profileData)
     .setIssuedAt()
     .setProtectedHeader({
       typ: 'JWT',

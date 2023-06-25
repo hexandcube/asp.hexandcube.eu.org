@@ -121,6 +121,7 @@
                     <p>
                         <button type="submit" data-i18n="edit_profile_btn_upload"></button>
                         <button type="button" id="btn_export_profile" class="subtle" data-i18n="edit_profile_btn_export_profile"></button>
+                        <button type="button" id="btn_delete_profile" class="subtle" data-i18n="edit_profile_btn_delete_profile"></button>
                         <output></output>
                     </p>
                 </form>
@@ -220,6 +221,17 @@
             <p>Source code on <a href="https://codeberg.org/keyoxide/kx-aspe-web">codeberg.org</a> — version <span data-template="build_version"></span></p>
         </footer>
     </div>
+
+    <dialog id="delete_profile">
+        <form method="dialog">
+            <button type="button" class="close_dialog">&#215;</button>
+            <h3>Really delete your profile?</h3>
+            <p>
+                This action will delete your profile from the server. It will no longer be accessible to anyone. Are you sure?
+            </p>
+            <button type="submit" data-i18n="edit_profile_btn_delete_profile"></button>
+        </form>
+    </dialog>
 
     <dialog id="add_claim_mastodon">
         <form method="dialog">

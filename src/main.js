@@ -233,38 +233,29 @@ document.querySelector('#form_edit_profile').addEventListener('submit', async ev
   evt.preventDefault()
 
   uploadOrExportProfile(ExportMethod.Upload)
-
-  // profile = ui.getProfileFromForm()
-  // if (profile.name.length === 0) {
-  //   giveFeedback('Please enter a name', 'warning')
-  //   return
-  // }
-
-  // const res = await asp.uploadProfile(profile, keypair, requestAction, domain)
-  // if (res) {
-  //   requestAction = 'update'
-  //   giveFeedback('Upload successful!', 'success')
-  // } else {
-  //   giveFeedback('Upload failed', 'failure')
-  // }
 })
 
 document.querySelector('#btn_export_profile').addEventListener('click', async evt => {
   uploadOrExportProfile(ExportMethod.Plaintext)
+})
 
-  // profile = ui.getProfileFromForm()
-  // if (profile.name.length === 0) {
-  //   giveFeedback('Please enter a name', 'warning')
-  //   return
-  // }
+document.querySelector('#btn_delete_profile').addEventListener('click', async evt => {
+  // @ts-ignore
+  document.querySelector('#delete_profile').showModal()
+})
 
-  // const res = await asp.uploadProfile(profile, keypair, requestAction, domain)
-  // if (res) {
-  //   requestAction = 'update'
-  //   giveFeedback('Upload successful!', 'success')
-  // } else {
-  //   giveFeedback('Upload failed', 'failure')
-  // }
+document.querySelector('#delete_profile form').addEventListener('submit', async evt => {
+  const el = document.querySelector('#add_claim_mastodon form')
+
+  const res = await asp.uploadProfile(profile, keypair, 'delete', domain)
+  if (res) {
+    giveFeedback('Profile deletion successful!', 'success')
+  } else {
+    giveFeedback('Profile deletion failed, perhaps you haven\'t uploaded it yet or you have deleted it already', 'failure')
+  }
+
+  // @ts-ignore
+  document.querySelector('dialog[open]').close()
 })
 
 document.querySelector('#container_identity_claim_inputs').addEventListener('click', evt => {
