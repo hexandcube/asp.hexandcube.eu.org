@@ -43,7 +43,7 @@ export async function generateProfileJws (profile, keypair) {
     'http://ariadne.id/version': 0,
     'http://ariadne.id/type': 'profile',
     'http://ariadne.id/name': profile.name || '',
-    'http://ariadne.id/claims': JSON.stringify(profile.claims.filter(x => x.length > 0)) || ''
+    'http://ariadne.id/claims': profile.claims.filter(x => x.length > 0)
   }
   if (profile.description.length > 0) {
     profileJson['http://ariadne.id/description'] = profile.description
@@ -126,13 +126,13 @@ export async function extractProfileJws (profileJws, fingerprint, publicKey) {
     throw new Error('JWS is not a profile')
   }
 
+  const claims = Array.isArray(payloadJson['http://ariadne.id/claims']) ? payloadJson['http://ariadne.id/claims'] : []
+
   const profile = new AspProfile()
   profile.name = payloadJson['http://ariadne.id/name'] || ''
   profile.description = payloadJson['http://ariadne.id/description'] || ''
   profile.color = payloadJson['http://ariadne.id/color'] || ''
-  if (payloadJson['http://ariadne.id/claims'].length > 0) {
-    profile.claims = JSON.parse(payloadJson['http://ariadne.id/claims']) || ''
-  }
+  profile.claims = claims
 
   return profile
 }
