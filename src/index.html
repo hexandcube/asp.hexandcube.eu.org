@@ -102,9 +102,7 @@
                     <h3 data-i18n="edit_profile_security_title"></h3>
                     <p>
                         <span data-i18n="edit_profile_secret_key"></span>:
-                        <br>
-                        <button type="button" id="btn_reveal_secret_key" data-i18n="edit_profile_btn_reveal_secret_key"></button>
-                        <span data-template="secret_key" class="important_data important_data--hidden">***<span data-i18n="general_txt_hidden"></span>***</span>
+                        <span data-template="secret_key" class="important_data"></span>
                         <span data-i18n="edit_profile_secret_key_warning"></span>
                     </p>
                     <p>
@@ -221,6 +219,39 @@
             <p>Source code on <a href="https://codeberg.org/keyoxide/kx-aspe-web">codeberg.org</a> — version <span data-template="build_version"></span></p>
         </footer>
     </div>
+
+    <dialog id="input_new_password">
+        <form method="dialog">
+            <button type="button" class="close_dialog">&#215;</button>
+            <h4>Set your profile password</h4>
+            <p>
+                <span>Password</span>
+                <input type="password" name="password1" required>
+            </p>
+            <p>
+                <span>Confirm password</span>
+                <input type="password" name="password2" required>
+            </p>
+            <p>
+                <button type="submit" data-i18n="input_password_btn_submit"></button>
+                <output></output>
+            </p>
+        </form>
+    </dialog>
+
+    <dialog id="input_password">
+        <form method="dialog">
+            <button type="button" class="close_dialog">&#215;</button>
+            <h4>Profile password</h4>
+            <p>
+                <span>Password</span>
+                <input type="password" name="password">
+            </p>
+            <p>
+                <button type="submit" data-i18n="input_password_btn_submit"></button>
+            </p>
+        </form>
+    </dialog>
 
     <dialog id="export_profile">
         <form method="dialog">

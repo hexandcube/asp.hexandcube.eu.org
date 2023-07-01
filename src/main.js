@@ -11,8 +11,8 @@ const buildVersion = '__buildVersion__'
 const defaultDomain = '__configDefaultDomain__'
 
 // @ts-ignore
-/** @type {jose.GenerateKeyPairResult<jose.KeyLike>} */
-let keypair
+/** @type {string} */
+let encryptedKey
 /** @type {string} */
 let domain
 /** @type {string} */
@@ -23,8 +23,6 @@ let fingerprint
 let profile
 /** @type {string} */
 let requestAction = 'create'
-/** @type {number} */
-let timeoutId = NaN
 
 /**
  * @readonly
@@ -68,39 +66,21 @@ const updateProofs = async (aspeUri) => {
 
 /**
  * @function
- * @param {string} message
- * @param {string} [state]
- * @param {number} [timeout]
- */
-const giveFeedback = (message, state, timeout) => {
-  if (!Number.isNaN(timeoutId)) {
-    clearTimeout(timeoutId)
-  }
-  ui.formFeedback(message, state)
-  timeoutId = removeFeedback(timeout)
-}
-
-/**
- * @function
- * @param {number} [timeout]
- * @returns {number}
- */
-const removeFeedback = (timeout) => {
-  // @ts-ignore
-  return setTimeout(() => {
-    ui.formFeedback('', 'idle')
-  }, timeout || 5000)
-}
-
-/**
- * @function
  * @param {ExportMethod} method
  */
 const uploadOrExportProfile = async method => {
   profile = ui.getProfileFromForm()
 
+  const password = await ui.askUserForPassword().catch(_ => {
+    return ''
+  })
+  if (password.length === 0) {
+    return
+  }
+  const keypair = await crypt.importKey(encryptedKey, password)
+
   if (profile.name.length === 0) {
-    giveFeedback(i18next.t('edit_profile_feedback_missing_name'), 'warning')
+    ui.giveFeedback(i18next.t('edit_profile_feedback_missing_name'), 'warning')
     return
   }
 
@@ -127,14 +107,14 @@ const uploadOrExportProfile = async method => {
 
       if (res) {
         requestAction = 'update'
-        giveFeedback(i18next.t('edit_profile_feedback_upload_successful'), 'success')
+        ui.giveFeedback(i18next.t('edit_profile_feedback_upload_successful'), 'success')
       } else {
-        giveFeedback(i18next.t('edit_profile_feedback_upload_failed'), 'failure')
+        ui.giveFeedback(i18next.t('edit_profile_feedback_upload_failed'), 'failure')
       }
       break
 
     default:
-      giveFeedback('Error: not able to export', 'failure')
+      ui.giveFeedback('Error: not able to export', 'failure')
       break
   }
 }
@@ -147,18 +127,16 @@ document.querySelector('#form_load_profile').addEventListener('submit', async ev
   // @ts-ignore
   domain = document.querySelector('#input_server').value
 
-  /** @type {string} */
   // @ts-ignore
-  const encodedKeyStr = document.querySelector('#input_secretkey').value
+  encryptedKey = document.querySelector('#input_secretkey').value
 
-  const privateKey = await crypt.importKey(encodedKeyStr)
-  // @ts-ignore
-  const publicKey = await crypt.privateKeyToPublicKey(privateKey)
-
-  keypair = {
-    privateKey,
-    publicKey
+  const password = await ui.askUserForPassword().catch(_ => {
+    return ''
+  })
+  if (password.length === 0) {
+    return
   }
+  const keypair = await crypt.importKey(encryptedKey, password)
 
   const jwkKey = await crypt.keyToJwk(keypair.privateKey)
   fingerprint = await crypt.computeJwkFingerprint(jwkKey)
@@ -167,6 +145,7 @@ document.querySelector('#form_load_profile').addEventListener('submit', async ev
   const profileJwsStr = await asp.getProfile(fingerprint, domain)
 
   const profile = await asp.extractProfileJws(profileJwsStr, fingerprint, keypair.publicKey)
+  ui.fillInTemplates('secret_key', encryptedKey)
   ui.fillInTemplates('fingerprint', fingerprint)
   ui.fillInTemplates('aspe_uri', aspeUri)
   ui.putProfileToForm(profile)
@@ -176,37 +155,32 @@ document.querySelector('#form_load_profile').addEventListener('submit', async ev
   ui.showPanel('edit_profile')
 })
 
-document.querySelector('#btn_create_profile').addEventListener('click', async evt => {
-  evt.preventDefault()
+document.querySelector('#btn_create_profile').addEventListener('click', async _ => {
+  const password = await ui.askUserForNewPassword().catch(_ => {
+    return ''
+  })
+  if (password.length === 0) {
+    return
+  }
 
   // @ts-ignore
   domain = document.querySelector('#input_server').value
 
-  keypair = await crypt.generateKey()
+  const keypair = await crypt.generateKey()
+  encryptedKey = await crypt.exportKey(keypair.privateKey, password)
+
   const jwkKey = await crypt.keyToJwk(keypair.privateKey)
   fingerprint = await crypt.computeJwkFingerprint(jwkKey)
   aspeUri = asp.generateAspeUri(domain, fingerprint)
 
   profile = new asp.AspProfile()
 
+  ui.fillInTemplates('secret_key', encryptedKey)
   ui.fillInTemplates('fingerprint', fingerprint)
   ui.fillInTemplates('aspe_uri', aspeUri)
   updateProofs(aspeUri)
   ui.putProfileToForm(profile)
   ui.showPanel('edit_profile')
-})
-
-document.querySelector('#btn_reveal_secret_key').addEventListener('click', async evt => {
-  evt.preventDefault()
-
-  ui.fillInTemplates('secret_key', await crypt.exportKey(keypair.privateKey))
-
-  document.querySelectorAll('[data-template="secret_key"]').forEach(el => {
-    el.classList.remove('important_data--hidden')
-  })
-
-  // @ts-ignore
-  evt.target.remove()
 })
 
 document.querySelector('#btn_generate_proofs').addEventListener('click', async evt => {
@@ -249,11 +223,19 @@ document.querySelector('#btn_delete_profile').addEventListener('click', async ev
 })
 
 document.querySelector('#delete_profile form').addEventListener('submit', async evt => {
+  const password = await ui.askUserForPassword().catch(_ => {
+    return ''
+  })
+  if (password.length === 0) {
+    return
+  }
+  const keypair = await crypt.importKey(encryptedKey, password)
+
   const res = await asp.uploadProfile(profile, keypair, 'delete', domain)
   if (res) {
-    giveFeedback(i18next.t('edit_profile_feedback_deletion_successful'), 'success')
+    ui.giveFeedback(i18next.t('edit_profile_feedback_deletion_successful'), 'success')
   } else {
-    giveFeedback(i18next.t('edit_profile_feedback_deletion_failed'), 'failure')
+    ui.giveFeedback(i18next.t('edit_profile_feedback_deletion_failed'), 'failure')
   }
 
   // @ts-ignore

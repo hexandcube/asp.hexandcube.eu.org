@@ -3,6 +3,9 @@ import i18next from 'i18next'
 import Backend from 'i18next-http-backend'
 import LanguageDetector from 'i18next-browser-languagedetector'
 
+/** @type {number} */
+let timeoutId = NaN
+
 /**
  * @function
  */
@@ -55,21 +58,52 @@ export function showPanel (panelName) {
  * @function
  * @param {string} message
  * @param {string} [state]
+ * @param {string} [formId]
+ * @param {number} [timeout]
  */
-export function formFeedback (message, state) {
+export function giveFeedback (message, state, formId, timeout) {
+  if (!Number.isNaN(timeoutId)) {
+    clearTimeout(timeoutId)
+  }
+  formFeedback(message, state, formId)
+  timeoutId = removeFeedback(formId, timeout)
+}
+
+/**
+ * @function
+ * @param {string} [formId]
+ * @param {number} [timeout]
+ * @returns {number}
+ */
+export function removeFeedback (formId, timeout) {
+  // @ts-ignore
+  return setTimeout(() => {
+    formFeedback('', 'idle', formId)
+  }, timeout || 5000)
+}
+
+/**
+ * @function
+ * @param {string} message
+ * @param {string} [state]
+ * @param {string} [formId]
+ */
+export function formFeedback (message, state, formId) {
+  formId ||= 'form_edit_profile'
+
   if (message.length === 0) {
     // @ts-ignore
-    document.querySelector('#form_edit_profile output').dataset.state = 'idle'
-    document.querySelector('#form_edit_profile button[type="submit"]').removeAttribute('disabled')
-    document.querySelector('#form_edit_profile output').innerHTML = ''
+    document.querySelector(`#${formId} output`).dataset.state = 'idle'
+    document.querySelector(`#${formId} button[type="submit"]`).removeAttribute('disabled')
+    document.querySelector(`#${formId} output`).innerHTML = ''
   } else {
     // @ts-ignore
-    document.querySelector('#form_edit_profile output').dataset.state = state
-    document.querySelector('#form_edit_profile output').innerHTML = message
+    document.querySelector(`#${formId} output`).dataset.state = state
+    document.querySelector(`#${formId} output`).innerHTML = message
   }
 
   if (state === 'success') {
-    document.querySelector('#form_edit_profile button[type="submit"]').setAttribute('disabled', 'disabled')
+    document.querySelector(`#${formId} button[type="submit"]`).setAttribute('disabled', 'disabled')
   }
 }
 
@@ -142,4 +176,69 @@ export function getProfileFromForm () {
   })
 
   return profile
+}
+
+/**
+ * @function
+ * @returns {Promise<string>}
+ */
+export async function askUserForNewPassword () {
+  const elDialog = document.querySelector('#input_new_password')
+  return new Promise((resolve, reject) => {
+    // @ts-ignore
+    elDialog.addEventListener('close', () => {
+      reject(Error('Dialog closed'))
+    })
+
+    elDialog.querySelector('form').addEventListener('submit', async evt => {
+      evt.preventDefault()
+
+      // @ts-ignore
+      const password1 = evt.target.querySelector('[name="password1"]').value
+      // @ts-ignore
+      const password2 = evt.target.querySelector('[name="password2"]').value
+
+      if (password1 !== password2) {
+        giveFeedback('Passwords are not the same!', 'failure', 'input_new_password')
+        return
+      }
+
+      // @ts-ignore
+      elDialog.close()
+
+      resolve(password1)
+    })
+
+    // @ts-ignore
+    elDialog.showModal()
+  })
+}
+
+/**
+ * @function
+ * @returns {Promise<string>}
+ */
+export async function askUserForPassword () {
+  const elDialog = document.querySelector('#input_password')
+  return new Promise((resolve, reject) => {
+    // @ts-ignore
+    elDialog.addEventListener('close', () => {
+      reject(Error('Dialog closed'))
+    })
+
+    elDialog.querySelector('form').addEventListener('submit', async evt => {
+      evt.preventDefault()
+
+      // @ts-ignore
+      const password = evt.target.querySelector('[name="password"]').value
+
+      // @ts-ignore
+      elDialog.close()
+
+      resolve(password)
+    })
+
+    // @ts-ignore
+    elDialog.showModal()
+  })
 }
