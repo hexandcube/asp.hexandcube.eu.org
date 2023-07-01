@@ -147,7 +147,7 @@ export async function getProfile (fingerprint, domain) {
   const res = await fetch(`https://${domain}/.well-known/aspe/id/${fingerprint}`, {
     method: 'GET',
     headers: {
-      Accept: 'application/jose; charset=UTF-8'
+      Accept: 'application/asp+jwt; charset=UTF-8'
     }
   })
 
@@ -177,7 +177,7 @@ export async function uploadProfile (profile, keypair, action, domain) {
     method: 'POST',
     body: requestJws,
     headers: {
-      'Content-Type': 'application/jose; charset=UTF-8'
+      'Content-Type': 'application/asp+jwt; charset=UTF-8'
     }
   })
 
