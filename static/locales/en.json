@@ -39,5 +39,6 @@
     "edit_profile_feedback_upload_successful": "Upload successful!",
     "edit_profile_feedback_upload_failed": "Upload failed",
     "edit_profile_feedback_deletion_failed": "Profile deletion failed, perhaps you haven't uploaded it yet or you have deleted it already",
-    "edit_profile_feedback_deletion_successful": "Profile deletion successful!"
+    "edit_profile_feedback_deletion_successful": "Profile deletion successful!",
+    "input_password_btn_submit": "Confirm"
 }

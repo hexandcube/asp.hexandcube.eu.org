@@ -29,5 +29,15 @@
     "edit_profile_hashed_proof": "Prueba de hash",
     "edit_profile_btn_generate_proofs": "Generar nuevas pruebas",
     "edit_profile_proof_help": "Utiliza una \"prueba directa\" si quieres que la gente encuentre tu perfil. Utiliza una \"prueba hash\" para ocultar tu perfil. ¡Nunca utilices la misma \"prueba hash\" dos veces!",
-    "edit_profile_btn_export_profile": "Exportar el perfil"
+    "edit_profile_btn_export_profile": "Exportar el perfil",
+    "edit_profile_btn_delete_profile": "Borrar el perfil",
+    "general_txt_remove": "Eliminar",
+    "general_txt_identity_claim": "Reivindicación de la identidad",
+    "edit_profile_feedback_missing_name": "Por favor, introduce un nombre",
+    "edit_profile_export_dialog_profile": "Perfil JWS:",
+    "edit_profile_export_dialog_upload": "Carga el perfil JWS en:",
+    "edit_profile_feedback_upload_successful": "¡Carga correcta!",
+    "edit_profile_feedback_upload_failed": "Carga fallida",
+    "edit_profile_feedback_deletion_failed": "La eliminación del perfil ha fallado, quizás aún no lo has subido o ya lo has eliminado",
+    "edit_profile_feedback_deletion_successful": "¡Perfil borrado con éxito!"
 }
