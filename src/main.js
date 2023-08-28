@@ -38,6 +38,10 @@ const main = async () => {
   ui.fillInTemplates('default_domain', defaultDomain)
   ui.initTranslations()
   ui.applyTranslations()
+
+  if (typeof WebAssembly === 'undefined') {
+    document.querySelector('#warning_wasm_support').classList.remove('hidden')
+  }
 }
 
 // ----- HELPER FUNCTIONS -----//

@@ -197,3 +197,7 @@ button.subtle:hover {
     color: var(--clr-on-bg-alt);
     user-select: none;
 }
+
+.hidden {
+    display: none;
+}
