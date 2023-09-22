@@ -56,7 +56,7 @@ const updateProofs = async (aspeUri) => {
   const salt = new Uint8Array(16)
   window.crypto.getRandomValues(salt)
   const key = await argon2id({
-    password: aspeUri.toUpperCase(),
+    password: aspeUri.toLowerCase(),
     salt,
     parallelism: 1,
     iterations: 256,
