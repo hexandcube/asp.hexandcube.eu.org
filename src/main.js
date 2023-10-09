@@ -124,7 +124,7 @@ const uploadOrExportProfile = async method => {
   }
 }
 
-addClaimDialogs(profile);
+addClaimDialogs(profile)
 
 // ----- EVENT LISTENERS -----//
 
