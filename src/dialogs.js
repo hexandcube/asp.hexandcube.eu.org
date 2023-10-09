@@ -260,10 +260,10 @@ const spdefs = [
     id: 'twitter',
     name: 'Twitter',
     instructions: 'Log in to twitter.com and compose a new tweet containing the proof.',
-    claim: 'https://INPUT_DOMAIN/status/INPUT_TWEET',
+    claim: 'https://twitter.com/INPUT_USERNAME/status/INPUT_TWEET',
     inputs: [
       { id: 'username', name: 'Username', placeholder: 'alice' },
-      { id: 'tweet', name: 'Tweet ID', placeholder: '...' }
+      { id: 'tweet', name: 'Tweet ID', placeholder: '123456789...' }
     ]
   },
   {
