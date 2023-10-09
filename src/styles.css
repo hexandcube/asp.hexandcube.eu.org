@@ -87,7 +87,7 @@ h1 {
 h2 {
     color: var(--clr-primary);
 }
-h3 svg {
+h3 svg, h3 img {
     width: 24px;
     vertical-align: bottom;
 }

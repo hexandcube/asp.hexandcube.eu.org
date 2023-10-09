@@ -4,6 +4,7 @@ import * as crypt from './crypto.js'
 import * as asp from './asp.js'
 import * as ui from './ui.js'
 import i18next from 'i18next'
+import { addClaimDialogs } from './dialogs'
 
 /** @type {string} */
 const buildVersion = '__buildVersion__'
@@ -122,6 +123,8 @@ const uploadOrExportProfile = async method => {
       break
   }
 }
+
+addClaimDialogs(profile);
 
 // ----- EVENT LISTENERS -----//
 
@@ -269,84 +272,6 @@ document.querySelectorAll('.close_dialog').forEach(el => {
     // @ts-ignore
     document.querySelector('dialog[open]').close()
   })
-})
-
-// ----- CLAIM DIALOGS -----//
-
-document.querySelector('#add_claim_mastodon form').addEventListener('submit', evt => {
-  const el = document.querySelector('#add_claim_mastodon form')
-
-  /** @type {string} */
-  // @ts-ignore
-  const input = el.querySelector('input.identifier').value
-  const matches = input.match(/@(.*)@(.*)/)
-
-  if (!(matches && matches.length < 2)) {
-    evt.preventDefault()
-  }
-
-  profile = ui.getProfileFromForm()
-  profile.claims.push(`https://${matches[2]}/@${matches[1]}`)
-  ui.putProfileToForm(profile)
-
-  // @ts-ignore
-  document.querySelector('dialog[open]').close()
-})
-
-document.querySelector('#add_claim_pixelfed form').addEventListener('submit', evt => {
-  const el = document.querySelector('#add_claim_pixelfed form')
-
-  /** @type {string} */
-  // @ts-ignore
-  const input = el.querySelector('input.identifier').value
-  const matches = input.match(/@(.*)@(.*)/)
-
-  if (!(matches && matches.length < 2)) {
-    evt.preventDefault()
-  }
-
-  profile = ui.getProfileFromForm()
-  profile.claims.push(`https://${matches[2]}/@${matches[1]}`)
-  ui.putProfileToForm(profile)
-
-  // @ts-ignore
-  document.querySelector('dialog[open]').close()
-})
-
-document.querySelector('#add_claim_dns form').addEventListener('submit', evt => {
-  const el = document.querySelector('#add_claim_dns form')
-
-  /** @type {string} */
-  // @ts-ignore
-  const input = el.querySelector('input.domain').value
-
-  profile = ui.getProfileFromForm()
-  profile.claims.push(`dns:${input}?type=TXT`)
-  ui.putProfileToForm(profile)
-
-  // @ts-ignore
-  document.querySelector('dialog[open]').close()
-})
-
-document.querySelector('#add_claim_forgejo form').addEventListener('submit', evt => {
-  const el = document.querySelector('#add_claim_forgejo form')
-
-  /** @type {string} */
-  // @ts-ignore
-  const inputDomain = el.querySelector('input.domain').value
-  /** @type {string} */
-  // @ts-ignore
-  const inputUsername = el.querySelector('input.username').value
-  /** @type {string} */
-  // @ts-ignore
-  const inputRepo = el.querySelector('input.repo').value
-
-  profile = ui.getProfileFromForm()
-  profile.claims.push(`https://${inputDomain}/${inputUsername}/${inputRepo}`)
-  ui.putProfileToForm(profile)
-
-  // @ts-ignore
-  document.querySelector('dialog[open]').close()
 })
 
 main()
