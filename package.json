@@ -6,7 +6,7 @@
   "main": "src/index.js",
   "repository": "https://codeberg.org/keyoxide/kx-aspe-web",
   "author": "Yarmo Mackenbach <dev@yarmo.eu>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "lint": "eslint ./src",
     "lint:fix": "eslint ./src --fix",
