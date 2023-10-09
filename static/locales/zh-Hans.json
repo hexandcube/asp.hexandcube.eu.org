@@ -33,5 +33,12 @@
     "edit_profile_btn_create_profile": "创建新的个人资料",
     "header_warning_security_considerations": "使用该工具前，请阅读<a href=\"#security-considerations\">安全注意事项</a>",
     "edit_profile_btn_load_profile": "加载个人资料",
-    "edit_profile_secret_key_warning": "重要提示：请妥善保存密钥！您在编辑个人资料时会用到它！"
+    "edit_profile_secret_key_warning": "重要提示：请妥善保存密钥！您在编辑个人资料时会用到它！",
+    "input_profile_color_label": "个人资料颜色",
+    "general_txt_remove": "删除",
+    "edit_profile_uri": "统一资源标识符",
+    "edit_profile_export_dialog_upload": "上传个人资料 JWS（JSON Web Signature）到：",
+    "input_service_provider_choice_manual": "手动输入",
+    "general_txt_or": "或",
+    "edit_profile_export_dialog_profile": "个人资料 JWS（JSON Web Signature）："
 }

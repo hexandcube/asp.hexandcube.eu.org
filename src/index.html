@@ -231,13 +231,13 @@
     <dialog id="input_new_password">
         <form method="dialog">
             <button type="button" class="close_dialog">&#215;</button>
-            <h4>Set your profile password</h4>
+            <h4 data-i18n="password_dialog_set_password"></h4>
             <p>
-                <span>Password</span>
+                <span data-i18n="password"></span>
                 <input type="password" name="password1" required>
             </p>
             <p>
-                <span>Confirm password</span>
+                <span data-i18n="confirm_password"></span>
                 <input type="password" name="password2" required>
             </p>
             <p>
@@ -250,9 +250,9 @@
     <dialog id="input_password">
         <form method="dialog">
             <button type="button" class="close_dialog">&#215;</button>
-            <h4>Profile password</h4>
+            <h4 data-i18n="password_dialog_profile_password"></h4>
             <p>
-                <span>Password</span>
+                <span data-i18n="password"></span>
                 <input type="password" name="password">
             </p>
             <p>
@@ -271,10 +271,8 @@
     <dialog id="delete_profile">
         <form method="dialog">
             <button type="button" class="close_dialog">&#215;</button>
-            <h3>Really delete your profile?</h3>
-            <p>
-                This action will delete your profile from the server. It will no longer be accessible to anyone. Are you sure?
-            </p>
+            <h3 data-i18n="delete_dialog_delete_profile"></h3>
+            <p data-i18n="delete_dialog_confirmation"></p>
             <button type="submit" data-i18n="edit_profile_btn_delete_profile"></button>
         </form>
     </dialog>

@@ -40,5 +40,11 @@
     "edit_profile_feedback_upload_failed": "Upload failed",
     "edit_profile_feedback_deletion_failed": "Profile deletion failed, perhaps you haven't uploaded it yet or you have deleted it already",
     "edit_profile_feedback_deletion_successful": "Profile deletion successful!",
-    "input_password_btn_submit": "Confirm"
+    "input_password_btn_submit": "Confirm",
+    "password_dialog_set_password": "Set your profile password",
+    "password": "Password",
+    "confirm_password": "Confirm password",
+    "password_dialog_profile_password": "Profile password",
+    "delete_dialog_delete_profile": "Really delete your profile?",
+    "delete_dialog_confirmation": "This action will delete your profile from the server. It will no longer be accessible to anyone. Are you sure?"
 }
