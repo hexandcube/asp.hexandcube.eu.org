@@ -39,5 +39,6 @@
     "edit_profile_feedback_upload_successful": "¡Carga correcta!",
     "edit_profile_feedback_upload_failed": "Carga fallida",
     "edit_profile_feedback_deletion_failed": "La eliminación del perfil ha fallado, quizás aún no lo has subido o ya lo has eliminado",
-    "edit_profile_feedback_deletion_successful": "¡Perfil borrado con éxito!"
+    "edit_profile_feedback_deletion_successful": "¡Perfil borrado con éxito!",
+    "input_password_btn_submit": "Confirmar"
 }

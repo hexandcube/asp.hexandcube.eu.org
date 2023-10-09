@@ -1,0 +1,10 @@
+{
+    "edit_profile_secret_key": "গোপন চাবি",
+    "general_txt_hidden": "লুকোনো",
+    "edit_profile_fingerprint": "আঙ্গুলের ছাপ(ফিঙ্গারপ্রিন্ট)",
+    "edit_profile_uri": "ইউআরআই(URI)",
+    "general_txt_or": "বা",
+    "edit_profile_btn_add_claim": "যোগ",
+    "edit_profile_security_title": "নিরাপত্তা",
+    "edit_profile_identity_proofs_title": "পরিচয় প্রমাণ"
+}
